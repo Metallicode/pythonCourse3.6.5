@@ -9,6 +9,7 @@ invoice01.addItem(fruit("egoz", 2.0, 8.9))
 invoice01.addItem(fruit("tamar", 5.0, 14.0))
 invoice01.addItem(fruit("limon", 2.0, 3.0))
 
+
 invoice02 = invoice()
 
 invoice02.addItem(fruit("shezif", 1.3, 6.0))
