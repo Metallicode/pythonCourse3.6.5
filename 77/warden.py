@@ -2,10 +2,12 @@ from person import Person
 
 class Warden(Person):
 
+      #ctor
       def __init__(self, fname, lname, idNum, evilness):
             self.evilness = evilness
             super().__init__(fname, lname, idNum)
-            
+
+      #check if inmate has Drugs method
       def shakedown(self, inmate):
             if inmate.hasDrugs:
                   punish = (self.evilness + 1)/2

@@ -2,7 +2,8 @@ from inmate import Inmate
 from warden import Warden
 
 class PrisonBlock:
-      
+
+      #ctor
       def __init__(self, name, numOfCells, wardon):
             self.wardon = wardon
             self.numOfInmatesInCell = 3
@@ -13,6 +14,7 @@ class PrisonBlock:
             for i in range(0, numOfCells):
                   self.cells.append([])
 
+      #add inmate to a cell
       def addInmate(self, inmate):
             for i in range(0, self.numOfCells):
                   wasAdd = False
@@ -25,7 +27,8 @@ class PrisonBlock:
 
             if not wasAdd:
                   print(f"no room for inmate {inmate.prisonerNumber}")
-                  
+
+      #make this class iterable
       def __iter__(self):
             self.inmateCounter = 0
             return self
@@ -37,7 +40,7 @@ class PrisonBlock:
             else:
                   raise StopIteration
 
-
+      #repr override
       def __repr__(self):
             return f"Block name: {self.name} \nBlock Warden: {self.wardon} \nInmates: {self.cells}"
 
