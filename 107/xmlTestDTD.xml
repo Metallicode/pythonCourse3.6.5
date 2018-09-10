@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE guitars [
+    <!ELEMENT guitars (guitar)>
+	<!ELEMENT guitar (body,neck,maker,cost)>
+	<!ENTITY maple "the maple is nice...yes..">
+]>
+<guitars>
+<guitar>
+		<body>Mahogany</body>
+		<neck>&maple;</neck>
+		<maker>Fender</maker>
+		<cost>500$</cost>
+	</guitar>
+<guitar>
+		<body color="black">Maple</body>
+		<neck>&maple;</neck>
+		<maker>Fender</maker>
+		<cost>467$</cost>
+	</guitar>
+</guitars>

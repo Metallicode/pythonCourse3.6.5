@@ -1,0 +1,32 @@
+<guitars>
+	<guitar>
+		<body>Mahogany</body>
+		<neck>Maple</neck>
+		<maker>Fender</maker>
+		<cost>500</cost>
+	</guitar>
+	<guitar>
+		<body color="black">Maple</body>
+		<neck>Maple</neck>
+		<maker>Fender</maker>
+		<cost>467</cost>
+	</guitar>
+	<guitar>
+		<body>Rosewood</body>
+		<neck>Spruce</neck>
+		<maker>Gibson</maker>
+		<cost>666</cost>
+	</guitar>
+	<guitar>
+		<body color="pink">Koa</body>
+		<neck>Maple</neck>
+		<maker>Gibson</maker>
+		<cost>484</cost>
+	</guitar>
+	<guitar>
+		<body>Indian Rosewood</body>
+		<neck>Mahogany</neck>
+		<maker>Ibanez</maker>
+		<cost>500</cost>
+	</guitar>
+</guitars>
