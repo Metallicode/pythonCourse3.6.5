@@ -1,0 +1,28 @@
+{
+    "key_01": "value_01",
+    "key_02": "value_02",
+    "key_03": "value_03",
+    "key_04": "value_04",
+    "key_05": [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05"
+    ],
+    "key_06": 1000,
+    "key_07": 1.3454,
+    "key_08": null,
+    "key_09": true,
+    "key_10": false,
+    "key_11": {
+        "subkey_01": 100,
+        "subkey_02": 200,
+        "subkey_03": 300
+    },
+    "newKey2": "newData2",
+    "newKey3": 5,
+    "newKey4": 5.5,
+    "newKey5": null,
+    "newKey123": "this is a new value"
+}
