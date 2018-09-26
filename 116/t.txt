@@ -1,0 +1,6 @@
+haim = 300
+dani = 900
+miri = 50
+dana = 350
+nirit = 1000
+kobi = 80
