@@ -1,0 +1,33 @@
+import inspect
+import pprint
+
+id
+gc.get_objects
+
+dir
+
+type
+type(o).classVal
+
+
+obj_id = id(o)
+objects = gc.get_objects()
+
+for i in objects:
+	if id(i) == obj_id:
+		obj_ref = i
+
+
+help
+inspect.getmembers
+inspect.getmodule
+inspect.getfile
+
+inspect.signature
+inspect.getargspec
+
+inspect.getsource
+inspect.getsourcelines
+
+exec()
+
