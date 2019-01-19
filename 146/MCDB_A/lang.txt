@@ -1,0 +1,16 @@
+GET0 [item_id || ?]1 FROM2 [collection]3 (WITH4 [<att_name>5<att_val>]6)
+INSERT [item str({dict})] INTO [collection]
+CREATE [collection_name]
+DELETE0 [collection/item]1 <col_name/item_id||?>2 {[FROM3 [collection]4 (WITH5 [<att_name>6<att_val>7])}
+DROP [db_name]
+
+
+Test:
+
+CREATE client_collection
+
+INSERT {"bob":"2"} INTO client_collection
+INSERT {"metalliccode":"666", "dog": "bert"} INTO client_collection
+GET <item_id> FROM client_collection
+GET <item_id> FROM client_collection WITH bob 2
+DELETE <?> FROM COLLECTION client_collection WITH bob 2
