@@ -11,14 +11,14 @@ class MCDBServer:
 
       mcdb_syntax_actions = ["GET", "CREATE", "DELETE", "INSERT", "DROP"]
       
-      def __init__(self, addr="192.168.1.14",port=666, dbName="default"):
+      def __init__(self, addr="192.168.1.14",port=666, dbName="default", passwd="ADMIN"):
             FORMAT = '%(module)s   >>>   %(message)s'
             logging.basicConfig(level=logging.DEBUG, format=FORMAT)
             
             logging.debug(f"creating MCDBServer on {addr} {port}")
             
             self.regx_pattern = re.compile(r"\{.+\}")
-            self.database = mcdb.MCDB()      
+            self.database = mcdb.MCDB(password= passwd)      
             self.soc = socket.socket()
             self.port = port
             self.soc.bind((addr, port))
@@ -144,4 +144,7 @@ class MCDBServer:
             
 
 if __name__ == "__main__":
-      mcserver = MCDBServer()
+      p= input("enter your password>>>")
+      import os
+      os.system('cls' if os.name == 'nt' else 'clear')
+      mcserver = MCDBServer(passwd=p)

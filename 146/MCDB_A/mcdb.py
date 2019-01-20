@@ -54,6 +54,7 @@ class MCDB:
             logging.debug(f"new collection {collection.name} inserted to db collections")            
 
 
+
       def delete_collection(self, collection_name, sync=True):
             col, idx = self.get_collection(collection_name)
             if col is not None:
@@ -97,23 +98,19 @@ class MCDB:
 
       def save_collection_state_to_file(self, collection_name):
             col, idx = self.get_collection(collection_name)
-
             strList = []
-
             if col is not None:
                   for k, v in col.collection_dict.items():
                         if type(v) != dict and type(v) != str:
                               strList.append((json.dumps(v.__dict__),k))
                         else:
                               strList.append((json.dumps(v),k))
-
-                  
+      
                   logging.debug(f"writing collection to disk!")
                   with open(f"{self.dirPath}{col.name}.pydb", "wb") as f:
                         col_str = self.cryptor.return_encrypted(json.dumps(strList))
 ##                        col_str = json.dumps(strList) ###no encryption
                         f.write(col_str.encode())
-
 
 
       def read_collection_from_file(self, collection_name):
@@ -131,7 +128,6 @@ class MCDB:
                   return new_col
 
 
-                  
       def set_db_name(self, db_name):
             if db_name is "":
                   db_name = datetime.datetime.now().strftime("%c")
@@ -157,6 +153,7 @@ class MCDB:
                   msg = collection.delete_item(predicate=item_id)
             self.sync_collection(collectionName)
             return msg
+
 
       def drop_db(self, delFiles=False):
             logging.debug(f"drop db!")
