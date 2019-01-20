@@ -12,10 +12,13 @@ class MCDBServer:
       mcdb_syntax_actions = ["GET", "CREATE", "DELETE", "INSERT", "DROP"]
       
       def __init__(self, addr="192.168.1.14",port=666, dbName="default"):
-            logging.basicConfig(level=logging.DEBUG)
+            FORMAT = '%(module)s   >>>   %(message)s'
+            logging.basicConfig(level=logging.DEBUG, format=FORMAT)
+            
+            logging.debug(f"creating MCDBServer on {addr} {port}")
+            
             self.regx_pattern = re.compile(r"\{.+\}")
             self.database = mcdb.MCDB()      
-            logging.debug(f"creating MCDBServer on {addr} {port}")
             self.soc = socket.socket()
             self.port = port
             self.soc.bind((addr, port))
@@ -44,12 +47,12 @@ class MCDBServer:
                               client, address = self.soc.accept()
                               inputs.append(client)
                               logging.debug(f"connected to new client {client}")
-                              client.send(b"Hello")
+                              client.send(b"Hello from MCDB Server")
 
                         else:
                               try:
                                     data = i.recv(1024)
-                                    logging.debug(f"got message from client {data.decode()}")
+                                    logging.debug(f"got message from client {data.decode()} \t<----- NEW MSG")
                                     t = threading.Thread(target=self.digest_message, args=(data.decode(),i))
                                     t.start()
                                     
@@ -68,7 +71,7 @@ class MCDBServer:
 
 
       def digest_message(self, msg, client):
-            logging.debug(f"digesting message")
+            logging.debug(f"digesting message....{msg}")
             messageItems = msg.split()
             if messageItems[0]=="INSERT":
                   dict_location = self.regx_pattern.search(msg).span()
@@ -77,7 +80,7 @@ class MCDBServer:
 
 
       def action_switch(self, action, client):
-            logging.debug(f"action_switch {action}")
+            logging.debug(f"action_switch ON {action}")
             
             if action[0] not in MCDBServer.mcdb_syntax_actions:
                   logging.warning(f"problem with syntax action")
@@ -110,10 +113,10 @@ class MCDBServer:
                         if action[1] == "ITEM":
                               logging.debug(f"DELETE ITEM call")
                               if action[2] == "?":
-                                    filterFunc = MCDBServer.filter_maker(action[7],action[8])
-                                    res_msg = self.database.delete_item(collectionName=action[5],predicate=filterFunc)
+                                    filterFunc = MCDBServer.filter_maker(action[6],action[7])
+                                    res_msg = self.database.delete_item(collectionName=action[4],predicate=filterFunc)
                               else:
-                                    res_msg = self.database.delete_item(collectionName=action[5], item_id=action[2])
+                                    res_msg = self.database.delete_item(collectionName=action[4], item_id=action[2])
                               self.response(res_msg, client)
                               
                         elif action[1] == "COLLECTION": 
@@ -121,12 +124,14 @@ class MCDBServer:
                               self.database.delete_collection(action[2])
                               self.response(f"collection {action[2]} deleted ok", client)
 
+
             
                   elif action[0] == "INSERT":
                         logging.debug(f"INSERT action call")
                         new_item_as_dict = ast.literal_eval(action[1])
                         item_id = self.database.insert_item(action[3], new_item_as_dict)
                         self.response(item_id, client)
+
 
                         
                   elif action[0] == "DROP":

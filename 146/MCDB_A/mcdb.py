@@ -54,12 +54,13 @@ class MCDB:
             logging.debug(f"new collection {collection.name} inserted to db collections")            
 
 
-      def delete_collection(self, collection_name):
+      def delete_collection(self, collection_name, sync=True):
             col, idx = self.get_collection(collection_name)
             if col is not None:
                   if self.collections[idx] is not None:
                         del self.collections[idx]
-                        self.sync_collection(collection_name)
+                        if sync:
+                              self.sync_collection(collection_name)
                         logging.debug(f"collection {collection_name} deleted ok!")
 
 
@@ -125,7 +126,7 @@ class MCDB:
                   for i in from_json:
                         new_col.insert_item(ast.literal_eval(i[0]), i[1])
 
-                  self.delete_collection(collection_name)
+                  self.delete_collection(collection_name, sync=False)
                   self.insert_collection(new_col)
                   return new_col
 
@@ -137,19 +138,21 @@ class MCDB:
             self.db_name = db_name
 
 
-      def insert_item(self, collectionName, item):
-            self.sync_collection(collectionName)
+      def insert_item(self, collectionName, item, withSync=True):
+            if withSync:
+                  self.sync_collection(collectionName)
             collection = self.get_collection(collectionName)[0]
             item_id = collection.insert_item(item)
-            self.sync_collection(collectionName)
+            if withSync:
+                  self.sync_collection(collectionName)
             return item_id
 
 
       def delete_item(self, collectionName, item_id=None, filterFunc=None):
             self.sync_collection(collectionName)
             collection = self.get_collection(collectionName)[0]
-            if item_i is not None:
-                  msg = collection.delete_item(item_id=item_id)
+            if item_id is not None:
+                  msg = collection.delete_item(item_id=int(item_id))
             elif filterFunc is not None:
                   msg = collection.delete_item(predicate=item_id)
             self.sync_collection(collectionName)

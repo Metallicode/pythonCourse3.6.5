@@ -24,7 +24,7 @@ class MCDBCollection:
 
       @property
       def name(self):
-            logging.debug(f"get name property {self.__name}")
+##            logging.debug(f"get name property {self.__name}")
             return self.__name
 
 
@@ -74,6 +74,9 @@ class MCDBCollection:
                         logging.debug(f"deleting {item_id}")
                         del self.collection_dict[item_id]
                         return "item deleted ok"
+                  else:
+                        return "item id not found in collection"
+                  
             if predicate is not None:
                   items_deleted_counter = 0
                   items_to_del = list(filter(predicate, self.collection_dict.values()))
