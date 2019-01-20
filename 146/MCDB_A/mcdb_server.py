@@ -87,16 +87,11 @@ class MCDBServer:
             else:
                   if action[0] == "GET":
                         logging.debug(f"GET call")
-                        self.database.sync_collection(action[3])
-                        collection = self.database.get_collection(action[3])
                         if action[1] != "?":
-                              ##get item by id
-                              item = collection[0].collection_dict[int(action[1])]
+                              item = self.database.get_item(collectionName=action[3], item_id=int(action[1]))
                         else:
-                              ##create predicate
-                              filterFunc = MCDBServer.filter_maker(action[5],action[6])
-                              item = collection[0].return_item(filterFunc)
-                        
+                              filterF = MCDBServer.filter_maker(action[5],action[6])
+                              item = self.database.get_item(collectionName=action[3], filterFunc=filterF)                    
                         logging.debug(f"ok get item {item}")
                         self.response(item, client)
 
@@ -106,56 +101,42 @@ class MCDBServer:
                         new_col = self.database.create_collection(action[1])
                         if new_col is not None:
                               self.response(f"collection {new_col.name} created!", client)
-                              self.database.sync_collection(new_col.name)
                         else:
-                              self.response(f"collection {new_col.name} not created! change name...", client)
+                              self.response(f"collection {action[1]} not created! change name...", client)
 
-
-                  
+     
                   elif action[0] == "DELETE":
                         logging.debug(f"DELETE action call")
                         if action[1] == "ITEM":
                               logging.debug(f"DELETE ITEM call")
-                              self.database.sync_collection(action[5])
-                              collection = self.database.get_collection(action[5])
                               if action[2] == "?":
-                                    #delete by WITH
                                     filterFunc = MCDBServer.filter_maker(action[7],action[8])
-                                    res_msg = collection[0].delete_item(predicate=filterFunc)
+                                    res_msg = self.database.delete_item(collectionName=action[5],predicate=filterFunc)
                               else:
-                                    #delete by id
-                                    res_msg = collection.delete_item(item_id=action[2])
-                              self.database.sync_collection(action[5])
+                                    res_msg = self.database.delete_item(collectionName=action[5], item_id=action[2])
                               self.response(res_msg, client)
                               
                         elif action[1] == "COLLECTION": 
                               logging.debug(f"DELETE COLLECTION call")
                               self.database.delete_collection(action[2])
-                              self.database.sync_collection(action[2])
-                              self.response(f"collection {action[2]} deleted", client)
+                              self.response(f"collection {action[2]} deleted ok", client)
 
-
-
-                              
+            
                   elif action[0] == "INSERT":
                         logging.debug(f"INSERT action call")
-                        self.database.sync_collection(action[3])
-                        collection = self.database.get_collection(action[3])
                         new_item_as_dict = ast.literal_eval(action[1])
-                        item_id = collection[0].insert_item(new_item_as_dict)
-                        self.database.sync_collection(action[3])
+                        item_id = self.database.insert_item(action[3], new_item_as_dict)
                         self.response(item_id, client)
 
                         
                   elif action[0] == "DROP":
                         logging.debug(f"DROP action call")
                         self.database.drop_db(delFiles=True)
-
+                        self.response("db destroyed!", client)
 
       def response(self, data, client):
             client.send(json.dumps(data).encode())
             
 
-
 if __name__ == "__main__":
-      mcdbs = MCDBServer()
+      mcserver = MCDBServer()

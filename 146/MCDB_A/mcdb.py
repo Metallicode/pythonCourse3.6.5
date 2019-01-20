@@ -44,6 +44,7 @@ class MCDB:
             new_col = dbc(collection_name)
             self.collections.append(new_col)
             logging.debug(f"collection {collection_name} created!")
+            self.sync_collection(collection_name)
             return new_col
 
 
@@ -58,7 +59,8 @@ class MCDB:
             if col is not None:
                   if self.collections[idx] is not None:
                         del self.collections[idx]
-                        logging.debug(f"collection {collection_name} deleted!")
+                        self.sync_collection(collection_name)
+                        logging.debug(f"collection {collection_name} deleted ok!")
 
 
                  
@@ -70,6 +72,16 @@ class MCDB:
             return None, -1
 
 
+
+      def get_item(self, collectionName, item_id=None, filterFunc=None):
+            self.sync_collection(collectionName)
+            collection = self.get_collection(collectionName)[0]
+            if item_id is not None:
+                  return collection.collection_dict[item_id]
+            elif filterFunc is not None:
+                  return collection.return_item(filterFunc)
+
+            
 
       def sync_collection(self, collection_name, syncToMeme=True):
             if syncToMeme:
@@ -125,6 +137,23 @@ class MCDB:
             self.db_name = db_name
 
 
+      def insert_item(self, collectionName, item):
+            self.sync_collection(collectionName)
+            collection = self.get_collection(collectionName)[0]
+            item_id = collection.insert_item(item)
+            self.sync_collection(collectionName)
+            return item_id
+
+
+      def delete_item(self, collectionName, item_id=None, filterFunc=None):
+            self.sync_collection(collectionName)
+            collection = self.get_collection(collectionName)[0]
+            if item_i is not None:
+                  msg = collection.delete_item(item_id=item_id)
+            elif filterFunc is not None:
+                  msg = collection.delete_item(predicate=item_id)
+            self.sync_collection(collectionName)
+            return msg
 
       def drop_db(self, delFiles=False):
             logging.debug(f"drop db!")
@@ -133,7 +162,7 @@ class MCDB:
             self.collections  = []
             if delFiles:
                   logging.debug(f"deleting db files!")
-                  fileNames = [f"{self.dirPath}{c.name}.pydb" for c in listdir(self.dirPath) if isfile(join(self.dirPath, f))]
+                  fileNames = [self.dirPath+c.name+".pydb" for c in listdir(self.dirPath) if isfile(join(self.dirPath, c))]
                   for c in fileNames:
                         os.remove(c)
 

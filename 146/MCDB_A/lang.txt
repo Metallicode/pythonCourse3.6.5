@@ -12,5 +12,5 @@ CREATE client_collection
 INSERT {"bob":"2"} INTO client_collection
 INSERT {"metalliccode":"666", "dog": "bert"} INTO client_collection
 GET <item_id> FROM client_collection
-GET <item_id> FROM client_collection WITH bob 2
+GET <?> FROM client_collection WITH bob 2
 DELETE <?> FROM COLLECTION client_collection WITH bob 2
