@@ -1,0 +1,22 @@
+sqlcmd -S .\SQLEXPRESS
+
+sqlcmd -S .\SQLEXPRESS -o SQL_log.txt
+
+select......;
+GO
+
+
+
+pip install pyodbc
+
+import pyodbc
+
+conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=.\SQLEXPRESS;DATABASE=metallicode_db;Trusted_Connection=yes;')
+cur = conn.cursor()
+
+cur.execute('USE metallicode_db;')
+cur.execute('SELECT * FROM users;')
+
+
+cur.execute('CREATE TABLE Test (PersonID int,LastName varchar(255));')
+conn.commit()

@@ -1,0 +1,47 @@
+CREATE DATABASE metallicode_db;
+DROP DATABASE metallicode_db;
+
+USE metallicode_db;
+
+CREATE DATABASE metallicode_db;
+CREATE TABLE Users (PersonID int, FirstName varchar(255), Email varchar(255));
+
+
+DROP TABLE Users;
+
+exec sp_rename 'dbo.Users', 'users';
+
+ALTER TABLE users
+ADD Poop varchar(255);
+
+EXEC sp_rename 'dbo.users.Poop', 'Password', 'COLUMN';
+
+
+ALTER TABLE users
+DROP COLUMN Password;
+
+
+ALTER TABLE users ALTER COLUMN FirstName varchar(200);
+
+
+INSERT INTO users (PersonID,FirstName,Email,Password)
+VALUES (1, 'bert', 'bert@dog.com','ilovefood');
+
+INSERT INTO users (PersonID,FirstName,Email,Password)
+VALUES (2, 'bill', 'bill@cat.com', 'ihateeverything');
+
+INSERT INTO users (PersonID,FirstName,Email,Password)
+VALUES (3, 'kirk', 'kirk@h.com', 'guitarme666');
+
+INSERT INTO users (PersonID,FirstName,Email,Password)
+VALUES (4, 'dana', 'dand@ev.com', 'metalyes');
+
+DELETE FROM users WHERE PersonID=2;
+
+
+UPDATE users
+SET PersonID = 1, FirstName = "bert", Email = "bert@dog.com", Password = "morefoodplease"
+WHERE PersonID=1;
+
+TRUNCATE TABLE users;
+
