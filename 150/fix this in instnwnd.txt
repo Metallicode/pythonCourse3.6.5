@@ -1,0 +1,7 @@
+--exec sp_dboption 'Northwind','trunc. log on chkpt.','true'
+--exec sp_dboption 'Northwind','select into/bulkcopy','true'
+--GO
+
+ALTER DATABASE Northwind
+SET RECOVERY SIMPLE;
+GO
